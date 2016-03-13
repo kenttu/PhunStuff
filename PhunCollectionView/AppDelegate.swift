@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreSpotlight
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,6 +28,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        
+        if url.host == nil
+        {
+            return true;
+        }
+        
+        // Support Deeplink
+        // Deeplink format is Deeplink://article/#indexnumber
+        let urlString = url.absoluteString
+        let queryArray = urlString.componentsSeparatedByString("/")
+        let query = queryArray[2]
+        
+        // Check if article
+        if query.rangeOfString("article") != nil
+        {
+            let data = urlString.componentsSeparatedByString("/")
+            if data.count >= 3
+            {
+                let parameter = data[3]
+                print(parameter);
+                let navigationController = self.window?.rootViewController as? UINavigationController
+                if let rootViewController = navigationController?.topViewController as? ViewController {
+                    let idString = data[3] as NSString
+                    let id = idString.integerValue
+                    rootViewController.processDeeplink(id)
+                }
+            }
+        }
+        
+        return true
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -47,6 +81,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func setupSpotlight() {
+        
+    }
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        let viewController = (window?.rootViewController as! UINavigationController).viewControllers[0] as! ViewController
+        viewController.restoreUserActivityState(userActivity)
+        
+        return true
     }
 
 }

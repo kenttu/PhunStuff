@@ -28,9 +28,24 @@ class PhunCollectionViewUITests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testListToDetailView() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        
+        let app = XCUIApplication()
+        let collectionViewsQuery = app.collectionViews
+        for index in 0...4 {
+            collectionViewsQuery.element.cells.elementBoundByIndex(UInt(index)).tap()
+            let phunHomeworkButton = app.navigationBars["Detail"].buttons["Phun Homework"]
+            phunHomeworkButton.tap()
+        }
+        
+        collectionViewsQuery.element.swipeUp()
+
+
     }
+
+    
     
 }

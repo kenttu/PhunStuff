@@ -7,9 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38048DB81C914C89007B6706 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38048DB71C914C89007B6706 /* CoreSpotlight.framework */; };
+		38048DBA1C914FB7007B6706 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38048DB91C914FB7007B6706 /* MobileCoreServices.framework */; };
+		38048DBC1C91CF08007B6706 /* searchIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 38048DBB1C91CF08007B6706 /* searchIcon.png */; };
+		38048DCA1C948EE8007B6706 /* NetworkUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38048DC91C948EE8007B6706 /* NetworkUnitTest.swift */; };
+		38048DCB1C94977E007B6706 /* NSURL+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389F06A71C8AB2C200D8ED6D /* NSURL+Additions.swift */; };
+		38048DCD1C9497DE007B6706 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389F06A51C8AB05200D8ED6D /* ImageCache.swift */; };
+		38048DCF1C95F8EA007B6706 /* pw.png in Resources */ = {isa = PBXBuildFile; fileRef = 38048DCE1C95F8EA007B6706 /* pw.png */; };
 		3841E3691C7D74AF00DA1B97 /* NSDate+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3841E3681C7D74AF00DA1B97 /* NSDate+Additions.swift */; };
 		3841E36B1C7D7C5300DA1B97 /* StarWarNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3841E36A1C7D7C5300DA1B97 /* StarWarNews.swift */; };
-		385394F11C82030300C5F086 /* UIImageView+ImageURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385394F01C82030300C5F086 /* UIImageView+ImageURL.swift */; };
 		385394F91C84A82000C5F086 /* PhunCollectionViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385394F81C84A82000C5F086 /* PhunCollectionViewUITests.swift */; };
 		389F06A61C8AB05200D8ED6D /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389F06A51C8AB05200D8ED6D /* ImageCache.swift */; };
 		389F06A81C8AB2C200D8ED6D /* NSURL+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389F06A71C8AB2C200D8ED6D /* NSURL+Additions.swift */; };
@@ -33,9 +39,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38048DB71C914C89007B6706 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		38048DB91C914FB7007B6706 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		38048DBB1C91CF08007B6706 /* searchIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchIcon.png; sourceTree = "<group>"; };
+		38048DC91C948EE8007B6706 /* NetworkUnitTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUnitTest.swift; sourceTree = "<group>"; };
+		38048DCE1C95F8EA007B6706 /* pw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pw.png; sourceTree = "<group>"; };
 		3841E3681C7D74AF00DA1B97 /* NSDate+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Additions.swift"; sourceTree = "<group>"; };
 		3841E36A1C7D7C5300DA1B97 /* StarWarNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarWarNews.swift; sourceTree = "<group>"; };
-		385394F01C82030300C5F086 /* UIImageView+ImageURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageURL.swift"; sourceTree = "<group>"; };
 		385394F61C84A82000C5F086 /* PhunCollectionViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhunCollectionViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		385394F81C84A82000C5F086 /* PhunCollectionViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhunCollectionViewUITests.swift; sourceTree = "<group>"; };
 		385394FA1C84A82000C5F086 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -64,6 +74,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38048DBA1C914FB7007B6706 /* MobileCoreServices.framework in Frameworks */,
+				38048DB81C914C89007B6706 /* CoreSpotlight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +85,7 @@
 		385394F71C84A82000C5F086 /* PhunCollectionViewUITests */ = {
 			isa = PBXGroup;
 			children = (
+				38048DC91C948EE8007B6706 /* NetworkUnitTest.swift */,
 				385394F81C84A82000C5F086 /* PhunCollectionViewUITests.swift */,
 				385394FA1C84A82000C5F086 /* Info.plist */,
 			);
@@ -82,6 +95,8 @@
 		38D197591C7B4BA200D98C0D = {
 			isa = PBXGroup;
 			children = (
+				38048DB91C914FB7007B6706 /* MobileCoreServices.framework */,
+				38048DB71C914C89007B6706 /* CoreSpotlight.framework */,
 				38D197641C7B4BA200D98C0D /* PhunCollectionView */,
 				385394F71C84A82000C5F086 /* PhunCollectionViewUITests */,
 				38D197631C7B4BA200D98C0D /* Products */,
@@ -100,6 +115,8 @@
 		38D197641C7B4BA200D98C0D /* PhunCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				38048DCE1C95F8EA007B6706 /* pw.png */,
+				38048DBB1C91CF08007B6706 /* searchIcon.png */,
 				38D197651C7B4BA200D98C0D /* AppDelegate.swift */,
 				38D197671C7B4BA200D98C0D /* ViewController.swift */,
 				38D197691C7B4BA200D98C0D /* Main.storyboard */,
@@ -110,7 +127,6 @@
 				38D197791C7CEE0200D98C0D /* DetailViewController.swift */,
 				3841E3681C7D74AF00DA1B97 /* NSDate+Additions.swift */,
 				389F06A71C8AB2C200D8ED6D /* NSURL+Additions.swift */,
-				385394F01C82030300C5F086 /* UIImageView+ImageURL.swift */,
 				3841E36A1C7D7C5300DA1B97 /* StarWarNews.swift */,
 				389F06A51C8AB05200D8ED6D /* ImageCache.swift */,
 			);
@@ -206,6 +222,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38048DCF1C95F8EA007B6706 /* pw.png in Resources */,
+				38048DBC1C91CF08007B6706 /* searchIcon.png in Resources */,
 				38D197701C7B4BA200D98C0D /* LaunchScreen.storyboard in Resources */,
 				38D1976D1C7B4BA200D98C0D /* Assets.xcassets in Resources */,
 				38D1976B1C7B4BA200D98C0D /* Main.storyboard in Resources */,
@@ -219,7 +237,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38048DCD1C9497DE007B6706 /* ImageCache.swift in Sources */,
+				38048DCA1C948EE8007B6706 /* NetworkUnitTest.swift in Sources */,
 				385394F91C84A82000C5F086 /* PhunCollectionViewUITests.swift in Sources */,
+				38048DCB1C94977E007B6706 /* NSURL+Additions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,7 +254,6 @@
 				38D197681C7B4BA200D98C0D /* ViewController.swift in Sources */,
 				3841E36B1C7D7C5300DA1B97 /* StarWarNews.swift in Sources */,
 				38D197661C7B4BA200D98C0D /* AppDelegate.swift in Sources */,
-				385394F11C82030300C5F086 /* UIImageView+ImageURL.swift in Sources */,
 				38D1977A1C7CEE0200D98C0D /* DetailViewController.swift in Sources */,
 				389F06A81C8AB2C200D8ED6D /* NSURL+Additions.swift in Sources */,
 			);
@@ -382,6 +402,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = PhunCollectionView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -397,6 +418,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				INFOPLIST_FILE = PhunCollectionView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

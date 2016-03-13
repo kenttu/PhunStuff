@@ -17,7 +17,7 @@ class PhunCollectionViewCell: UICollectionViewCell {
     var imageURL : NSURL?
     
     override func awakeFromNib() {
-        self.backgroundColor = UIColor.darkGrayColor()
+        self.backgroundColor = UIColor.blueColor()
         
         let textColor = UIColor.whiteColor()
         self.dateLabel?.textColor = textColor

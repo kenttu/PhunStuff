@@ -42,4 +42,32 @@ extension NSURL {
         task.resume()
     }
     
+    enum JSONError: String, ErrorType {
+        case NoData = "ERROR: no data"
+        case ConversionFailed = "ERROR: conversion from JSON failed"
+    }
+    
+    func jsonParser(completion: NSArray -> Void) {
+        
+        let request = NSMutableURLRequest(URL: self, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
+        
+        NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) -> Void in
+            do {
+                guard let dat = data else { throw JSONError.NoData }
+                
+                guard let json = try NSJSONSerialization.JSONObjectWithData(dat, options:NSJSONReadingOptions.MutableContainers) as? NSArray else { throw JSONError.ConversionFailed }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(json)
+                }
+                
+            } catch let error as JSONError {
+                print(error.rawValue)
+            } catch {
+                print(error)
+            }
+            }.resume()
+    }
+
+    
 }

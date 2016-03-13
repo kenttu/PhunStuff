@@ -8,57 +8,35 @@
 
 
 import UIKit
+import CoreSpotlight
+import MobileCoreServices
 
 class ViewController: UICollectionViewController {
 
     var objects = [StarWarNews]()
     
-    enum JSONError: String, ErrorType {
-        case NoData = "ERROR: no data"
-        case ConversionFailed = "ERROR: conversion from JSON failed"
-    }
+    var detailViewController : DetailViewController?
     
-    func session() -> NSURLSession {
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        configuration.URLCache = NSURLCache .sharedURLCache()
-        configuration.requestCachePolicy = NSURLRequestCachePolicy.ReturnCacheDataElseLoad
-        return NSURLSession(configuration: configuration)
-    }
+    var indexSelected : NSInteger?
     
-    func jsonParser() {
-        let urlPath = "https://raw.githubusercontent.com/phunware/services-interview-resources/master/feed.json"
-        guard let endpoint = NSURL(string: urlPath) else { print("Error creating endpoint");return }
-        let request = NSMutableURLRequest(URL: endpoint, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
-        
-        NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) -> Void in
-            do {
-                guard let dat = data else { throw JSONError.NoData }
-                
-                
-                guard let json = try NSJSONSerialization.JSONObjectWithData(dat, options:NSJSONReadingOptions.MutableContainers) as? NSArray else { throw JSONError.ConversionFailed }
-                
-                for item in json {
-                    self.objects.append(StarWarNews(object: item as! NSDictionary))
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.collectionView?.reloadData()
-                })
-                
-            } catch let error as JSONError {
-                print(error.rawValue)
-            } catch {
-                print(error)
-            }
-            }.resume()
-    }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.title = "Phun Homework"
-        self.jsonParser()
+        
+        let urlPath = NSURL(string: "https://raw.githubusercontent.com/phunware/services-interview-resources/master/feed.json")
+        urlPath?.jsonParser({ json in
+            for item in json {
+                self.objects.append(StarWarNews(object: item as! NSDictionary))
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.collectionView?.reloadData()
+                self.setupSearchableContent()
+            })
+
+        })
     }
     
     override func viewDidLayoutSubviews() {
@@ -114,20 +92,6 @@ class ViewController: UICollectionViewController {
         return cell;
     }
     
-    func loadImage(imageURL:NSURL?, completion: ((image: UIImage) -> Void)?)
-    {
-        guard let url = imageURL else { print("Error creating endpoint");return }
-        let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
-        
-        NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                guard let data = data where error == nil else { return }
-                let image = UIImage(data: data)
-                completion!(image: image!)
-            }
-        }.resume()
-
-    }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -150,43 +114,26 @@ class ViewController: UICollectionViewController {
         }
     }
     
-//    func collectionView(collectionView: UICollectionView,
-//        layout collectionViewLayout: UICollectionViewLayout,
-//        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-//    {
-//        var width : Double
-//        if (UIDevice.currentDevice().userInterfaceIdiom == .Pad) {
-//            width = Double((self.collectionView?.bounds.width)!) / Double(2.0)
-//        }
-//        else {
-//            width = Double((self.collectionView?.bounds.width)!)
-//        }
-    
-//        Dynamic height based on description text.
-//        let object = self.objects[indexPath.row]
-//        let text = object["description"] as! String
-//        let font = UIFont(name: "Helvetica", size: 17.0)
-//        let height = 130 + self.heightForView(text, font:font!, width:CGFloat(width)) + 130.0
-        
-//        let height = 150.0
-//        
-//        return CGSize(width: width, height: Double(height))
-//    }
-    
     func collectionView(collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAtIndex section: Int) -> UIEdgeInsets
     {
         return UIEdgeInsets(top: 4.0, left: 4.0, bottom: 4.0, right: 4.0)
     }
+    
     // MARK: - Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            if let indexPath = self.collectionView?.indexPathsForSelectedItems()![0] {
+            self.detailViewController = segue.destinationViewController as? DetailViewController
+            if let index = indexSelected {
+                let object = objects[index]
+                self.detailViewController!.detailItem = object
+                indexSelected = nil
+            }
+            else if let indexPath = self.collectionView?.indexPathsForSelectedItems()![0] {
                 let object = objects[indexPath.row]
-                let controller = segue.destinationViewController as! DetailViewController
-                controller.detailItem = object
+                self.detailViewController!.detailItem = object
             }
         }
     }
@@ -213,5 +160,75 @@ class ViewController: UICollectionViewController {
         label.sizeToFit()
         return label.frame.height
     }
+    
+    // func to support deeplink and spotlight
+    func processDeeplink(id : NSInteger) {
+        if id >= 0 && id < objects.count {
+            indexSelected = id
+            self.performSegueWithIdentifier("showDetail", sender: nil)
+        }
+        else {
+            let alertView = UIAlertView(title: "Invalid Deeplink ID",
+                message: "Article no longer available", delegate: nil, cancelButtonTitle: "OK")
+            alertView.show()
+        }
+    }
+    
+    // Setup keywords for spotlight
+    func setupSearchableContent() {
+        if #available(iOS 9.0, *) {
+            
+            var searchableItems = [CSSearchableItem]()
+            var index = 0
+            for object in objects {
+                let searchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+                
+                let keywords = object.title?.componentsSeparatedByString(" ")
+                
+                searchableItemAttributeSet.title = object.title
+                searchableItemAttributeSet.contentDescription = object.description
+                searchableItemAttributeSet.keywords = keywords
+                
+                
+                let image = UIImage(named: "pw.png")
+                let imageData = NSData(data: UIImagePNGRepresentation(image!)!)
+                searchableItemAttributeSet.thumbnailData = imageData
+                
+                let id = "com.phunware.Deeplink." + String(index++)
+                
+                let searchableItem = CSSearchableItem(uniqueIdentifier: id, domainIdentifier: "spotlight.sample", attributeSet: searchableItemAttributeSet)
+                
+                searchableItems.append(searchableItem)
+            }
+            
+            CSSearchableIndex.defaultSearchableIndex().indexSearchableItems(searchableItems, completionHandler: { (ErrorType) -> Void in
+                NSLog("indexed");
+            })
+
+            
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    // provide support for spotlight
+    override func restoreUserActivityState(activity: NSUserActivity) {
+        if #available(iOS 9.0, *) {
+            if activity.activityType == CSSearchableItemActionType {
+                if let userInfo = activity.userInfo {
+                    let selectedArticle = userInfo[CSSearchableItemActivityIdentifier] as! String
+                    NSLog("%@", selectedArticle)
+                    indexSelected = Int(selectedArticle.componentsSeparatedByString(".").last!)
+                    self.performSegueWithIdentifier("showDetail", sender: nil)
+
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
 }
+
+
 
